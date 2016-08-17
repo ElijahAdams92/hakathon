@@ -1,0 +1,63 @@
+.user-chat {
+    background-color: rgb(195, 52, 16);
+    margin: 25px;
+    border-radius: 15px;
+    padding: 10px;
+    color: white;
+    display: inline-block;
+    width:50%;
+    text-align: right;
+    float: right;
+}
+
+.bot-chat {
+    background-color: #d0c1c1;
+     margin: 25px;
+     border-radius: 15px;
+     padding: 10px;
+     display: inline-block;
+     width:50%;
+}
+
+.footer {
+    background-color: black;
+}
+
+.sail-boat {
+    display: block;
+}
+
+.top-header {
+    background-color: black;
+    height: 20px;
+}
+
+.container {
+    height: 175px;
+    color: white;
+}
+
+.container.one {
+    background-color: blue;
+}
+
+.container.two {
+    background-color: green;
+}
+
+.container.three {
+    background-color: orange;
+}
+
+.copy-write {
+    color: white;
+    text-align: center;
+}
+
+.grey-background {
+    background-color: grey;
+}
+
+.white-background {
+    background-color: white;
+}
