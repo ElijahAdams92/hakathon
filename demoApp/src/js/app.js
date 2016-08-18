@@ -93,14 +93,17 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories'])
                                 case 'Contact':
                                     returnIntentObject.intent = 'Contact';
                                     break;
+                                case 'FundInformation'
+                                    returnIntentObject.intent = 'FundInformation';
+                                    break;
+                                case 'News'
+                                    returnIntentObject.intent = 'News';
+                                    break;
                                 default:
                                     returnIntentObject.intent = 'Home';
                                     break;
                             }
                     }
-
-
-                    alert('Hi I found the intent '+returnIntentObject.intent);
 
                     return returnIntentObject;
                 }
