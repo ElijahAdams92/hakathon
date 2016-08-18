@@ -45,7 +45,7 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
 
         $scope.currentNavItem = 'home';
 
-        luisService.callIntent('Tell me about careers',intentService.determineIntent);
+        luisService.getIntent('Tell me about careers',intentService.determineIntent);
     }]).factory('luisService',['$http',function($http){
 
 
@@ -66,40 +66,43 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
                     //your code when fails
                 });
             };
-            return {"callIntent":getIntents};
+            return {"getIntent":getIntents};
     }]).factory('intentService',function(){
             var determineIntent = function(jsonObject){
                 if(jsonObject)
                 {
-                        var firstIntent = jsonObject.intents[0],
-                            foundIntent,
-                            returnIntent = '';
+                    var firstIntent = jsonObject.intents[0],
+                        foundIntent,
+                        returnIntentObject = {'intent':'','entities':jsonObject.entities};
 
-                        if(firstIntent)
-                        {
-                               foundIntent  = firstIntent.intent;
+                    if(firstIntent)
+                    {
+                           foundIntent  = firstIntent.intent;
 
-                                switch(foundIntent)
-                                {
-                                    case 'Careers':
-                                        returnIntent = 'Careers';
-                                        break;
-                                    case 'Account':
-                                        returnIntent = 'Account';
-                                        break;
-                                    case 'Balance':
-                                        returnIntent = 'Balance';
-                                        break;
-                                    case 'Contact':
-                                        returnIntent = 'Contact';
-                                        break;
-                                    default:
-                                        returnIntent = 'Home';
-                                        break;
-                                }
-                        }
-                    alert('Hi I found the intent '+foundIntent);
-                    return returnIntent;
+                            switch(foundIntent)
+                            {
+                                case 'Careers':
+                                    returnIntentObject.intent = 'Careers';
+                                    break;
+                                case 'Account':
+                                    returnIntentObject.intent = 'Account';
+                                    break;
+                                case 'Balance':
+                                    returnIntentObject.intent = 'Balance';
+                                    break;
+                                case 'Contact':
+                                    returnIntentObject.intent = 'Contact';
+                                    break;
+                                default:
+                                    returnIntentObject.intent = 'Home';
+                                    break;
+                            }
+                    }
+
+
+                    alert('Hi I found the intent '+returnIntentObject.intent);
+
+                    return returnIntentObject;
                 }
             };
 
