@@ -103,10 +103,10 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                 case 'Contact':
                                     returnIntentObject.intent = 'Contact';
                                     break;
-                                case 'FundInformation'
+                                case 'FundInformation':
                                     returnIntentObject.intent = 'FundInformation';
                                     break;
-                                case 'News'
+                                case 'News':
                                     returnIntentObject.intent = 'News';
                                     break;
                                 default:
