@@ -6,13 +6,15 @@
     </md-toolbar>
     <div ng-controller="AppCtrl">
         <div layout="column" class="white-text chat-window" layout-padding layout-margin>
-            <div ng-repeat="botChat in botChats">
-                <div class="botChat" layout-padding>{{botChat}}</div>
-                <div flex="25"></div>
-            </div>
-            <div ng-repeat="chat in userChats">
-                <div class="userChat" layout-padding>{{chat}}</div>
-                <div flex="25"></div>
+            <div ng-repeat="chat in chats">
+                <div ng-if="chat.messenger === 'bot'">
+                    <div class="botChat" layout-padding>
+                        <a ng-href="{{chat.url}}" ng-click="ctrl.closeDialog()"ng-bind="chat.message"></a>
+                    </div>
+                </div>
+                <div ng-if="chat.messenger === 'user'" flex-offset="25">
+                    <div class="userChat" layout-padding ng-bind="chat.message"></div>
+                </div>
             </div>
         </div>
         <div layout="row">

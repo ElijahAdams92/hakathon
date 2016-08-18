@@ -48,14 +48,57 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
 
         $scope.currentNavItem = 'home';
 
-         $scope.botChats = ['Hello', 'How may I help you?'];
+        $scope.chats = [{"messenger": "bot", "message":"Hello, How may I help you?"}];
 
-        $scope.userChats = [];
         $scope.userChat = '';
 
         $scope.addUserChat = function() {
-            $scope.userChats.push($scope.userChat);
+            $scope.chats.push({"messenger": "user", "message": $scope.userChat});
+
+            luisService.getIntent($scope.userChat, function(intentInfo) {
+               if(intentInfo){
+                     var firstIntent = intentInfo.intents[0],
+                         foundIntent,
+                         returnIntentObject = {'intent':'','entities':intentInfo.entities},
+                         returnData;
+
+                     if(firstIntent)
+                     {
+                            foundIntent  = firstIntent.intent;
+
+                             switch(foundIntent)
+                             {
+                                 case 'Careers':
+                                     returnIntentObject.intent = 'Careers';
+                                     returnData = '#careers';
+                                     break;
+                                 case 'Account':
+                                     returnIntentObject.intent = 'Account';
+                                     returnData = '#account'
+                                     break;
+                                 case 'Balance':
+                                     returnIntentObject.intent = 'Balance';
+                                     returnData = '#balance';
+                                     break;
+                                 case 'Contact':
+                                     returnIntentObject.intent = 'Contact';
+                                     returnData = '#contact'
+                                     break;
+                                 default:
+                                     returnIntentObject.intent = 'Home';
+                                     returnData = '#home';
+                                     break;
+                             }
+                     }
+
+                    $scope.botChat = 'I have found you some information about ' + returnIntentObject.intent;
+                    $scope.url = returnData;
+                    $scope.chats.push({"messenger": "bot", "message": $scope.botChat, "url": $scope.url});
+                }
+            });
+
             $scope.userChat = '';
+            $scope.botChat = '';
         };
 
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
@@ -91,7 +134,7 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                     var json=JSON.stringify(status);
                     json=JSON.parse(json);
 
-                    callback(json);
+                    return callback(json);
                 }).
                 error(function(status) {
                     //your code when fails
