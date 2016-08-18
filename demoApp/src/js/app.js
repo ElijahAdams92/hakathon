@@ -18,12 +18,15 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
             }).
             otherwise('/home');
     }])
+    .config(function($httpProvider){
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    })
     .config(function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
         .primaryPalette('red')
         .accentPalette('grey');
     })
-    .controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav) {
+    .controller('AppCtrl', ['$scope', '$mdSidenav','luisService', function($scope, $mdSidenav,luisService) {
         $scope.chatInput = '';
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
@@ -40,4 +43,26 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
          };
 
         $scope.currentNavItem = 'home';
+
+        $scope.openLuis = luisService.callIntent();
+    }]).factory('luisService',['$http',function($http){
+
+        var LUIS_URL = 'https://api.projectoxford.ai/luis/v1/application?id=c30e33ac-81ba-487b-99a5-e318f955226f&subscription-key=74722d25371d43f9b2d0d9d72eae583e&q=careers',
+            getIntents = function(){
+
+                $http({
+                    method: 'GET',
+                    url: LUIS_URL
+                }).
+                success(function(status) {
+                    var json=JSON.stringify(status);
+
+                    alert(json);
+                    json=JSON.parse(json);
+                }).
+                error(function(status) {
+                    //your code when fails
+                });
+            };
+            return {"callIntent":getIntents};
     }]);
