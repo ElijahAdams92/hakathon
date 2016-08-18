@@ -78,6 +78,28 @@
   height: 800px;
 }
 
+.accountHeader{
+    height:300px;
+    width:100%;
+    background-color: #D4CFC3;
+}
+
+.accountTableHeader{
+    width:20%;
+    color:white;
+}
+
+.accountTableItem{
+    width:20%;
+    padding:5px;
+}
+
+.headerRow{
+    background-color:#96151d;
+    padding:10px;
+}
+
+
 .chat-send-btn {
     display: inline-block;
 }
