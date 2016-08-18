@@ -58,6 +58,9 @@ angular.module('apiFactories',['ngResource'])
                   }
               }
           }
+      },
+      'findFundsById':function(fundList,id){
+
       }
     };
 });
