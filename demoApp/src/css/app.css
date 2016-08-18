@@ -54,10 +54,26 @@
     text-align: center;
 }
 
+.white-text {
+    color: white;
+}
+
 .grey-background {
     background-color: grey;
 }
 
 .white-background {
     background-color: white;
+}
+
+.bgi{
+    background: url(../images/sailboat-459794_1280.jpg) no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.ship-container {
+  height: 800px;
 }

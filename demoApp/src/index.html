@@ -3,32 +3,53 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Angular Material style sheet -->
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/app.css">
         <title>Demo App</title>
     </head>
     <body ng-cloak ng-controller="AppCtrl" class="grey-background">
         <div class="top-header"></div>
-        <md-toolbar layout="row">
-            <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-                <md-nav-item md-nav-href="#home" name="home">Home</md-nav-item>
-                <md-nav-item md-nav-href="#account" name="account_info">Account information</md-nav-item>
-                <md-nav-item md-nav-href="#balance" name="balances">Balances</md-nav-item>
-                <md-nav-item md-nav-href="#contact" name="contact_us">Contact us</md-nav-item>
-                <md-nav-item md-nav-href="#careers" name="careers">Careers</md-nav-item>
-            </md-nav-bar>
-            <div flex="25"></div>
-            <md-input-container>
-                <label>Search</label>
-                <input/>
-            </md-input-container>
+        <md-toolbar layout="row" layout-padding layout-xs="column">
+            <span class="md-toolbar-item">
+                 <md-button class="md-fab" ng-click="toggleSidenav('left')" hide-gt-md>
+                     <i class="material-icons">menu</i>
+                 </md-button>
+                 <h1 class="white-text">Voyager</h1>
+            </span>
+            <span hide-xs hide-sm hide-md>
+                <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+                    <md-nav-item md-nav-href="#home" name="home">Home</md-nav-item>
+                    <md-nav-item md-nav-href="#account" name="account_info">Account information</md-nav-item>
+                    <md-nav-item md-nav-href="#balance" name="balances">Balances</md-nav-item>
+                    <md-nav-item md-nav-href="#contact" name="contact_us">Contact us</md-nav-item>
+                    <md-nav-item md-nav-href="#careers" name="careers">Careers</md-nav-item>
+                </md-nav-bar>
+            </span>
+            <span class="md-toolbar-item">
+                <md-input-container class="white-background">
+                    <label>Search</label>
+                    <input/>
+                </md-input-container>
+            </span>
         </md-toolbar>
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2 grey-background" md-component-id="left">
+            <md-toolbar></md-toolbar>
+            <div layout="column" layout-padding>
+                <md-button ng-href="#home" ng-click="toggleSidenav('left')">Home</md-button>
+                <md-button ng-href="#account" ng-click="toggleSidenav('left')">Account information</md-button>
+                <md-button ng-href="#balances" ng-click="toggleSidenav('left')">Balances</md-button>
+                <md-button ng-href="#contact_us" ng-click="toggleSidenav('left')">Contact us</md-button>
+                <md-button ng-href="#careers" ng-click="toggleSidenav('left')">Careers</md-button>
+            </div>
+        </md-sidenav>
 
-        <section ng-view class="md-whiteframe-7dp white-background" layout-align="center center"></section>
+        <section ng-view layout-align="center center">
+        </section>
 
-        <md-button class="md-fab md-primary" aria-label="Chat">
-            <md-icon md-svg-src="images/jpg"></md-icon>
-        </md-button>
        <section class="md-whiteframe-7dp footer" flex layout-padding>
+           <md-button class="md-fab md-primary" aria-label="Chat">
+               <i class="material-icons">chat_bubble_outline</i>
+           </md-button>
            <div class="copy-write">&#169; 2016 The Professionals </div>
        </section>
     <!--<div flex-xs flex-gt-xs="25" layout="column" ng-controller="BeaconCtrl">-->
@@ -59,6 +80,5 @@
 
         <!-- Your application bootstrap  -->
         <script src="js/app.js"></script>
-
     </body>
 </html>

@@ -16,14 +16,14 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
             when('/careers', {
                 templateUrl: 'templates/careers.html'
             }).
-            otherwise('templates/home');
+            otherwise('/home');
     }])
     .config(function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
         .primaryPalette('red')
         .accentPalette('grey');
     })
-    .controller('AppCtrl', ['$scope', function($scope) {
+    .controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav) {
         $scope.chatInput = '';
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
@@ -34,6 +34,10 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
 
             $scope.chatInput = '';
         };
+
+        $scope.toggleSidenav = function(menuId) {
+            $mdSidenav(menuId).toggle();
+         };
 
         $scope.currentNavItem = 'home';
     }]);
