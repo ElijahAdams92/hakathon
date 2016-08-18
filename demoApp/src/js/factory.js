@@ -13,9 +13,8 @@ angular.module('apiFactories',['ngResource'])
     }])
 
     .factory('jobs',['$resource', function($resource){
-                  return $resource('/vanguard_jobs.xml');
-    }])
-    .factory('getFundInfoService',['$http',function($http){
+                  return $resource('../vanguard_jobs.json');
+    }]).factory('getFundInfoService',['$http',function($http){
         return{
 
             'getFunds':function(scope,callback){
@@ -62,6 +61,7 @@ angular.module('apiFactories',['ngResource'])
       }
     };
 });
+
 
 
 

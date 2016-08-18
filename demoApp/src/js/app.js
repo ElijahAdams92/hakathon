@@ -69,6 +69,13 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         $scope.testFunction = function (){
             var fund = $scope.findFundByTicker('VFINX');
         };
+        var jobsInfo = jobs.get(
+
+       function(data){
+              $scope.jobInfoToPrint = data.Report_Data.Report_Entry[0];
+              console.log($scope.jobInfoToPrint);
+
+       });
 
     }]).factory('luisService',['$http',function($http){
 
