@@ -18,16 +18,19 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
             }).
             otherwise('/home');
     }])
-    .config(function($httpProvider){
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    })
+    .config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.useXDomain = true;
+            delete $httpProvider.defaults.headers.common['X-Requested-With'];
+        }
+    ])
     .config(function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
         .primaryPalette('red')
         .accentPalette('grey');
     })
-    .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService','newsRecentStories','newsPersonalfinance','newsEconWeek','jobs',
-                            function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, jobs) {
+    .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService','newsRecentStories','newsPersonalfinance',
+                            'newsEconWeek','jobs','getFundInfoService','findFundService',
+                            function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, jobs,getFundInfoService,findFundService) {
         $scope.chatInput = '';
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
@@ -99,6 +102,24 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         };
 
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
+
+        getFundInfoService.getFunds($scope);
+
+        $scope.findFundByTicker =  function(fundTicker){
+            return findFundService.findFundsByTicker($scope.funds,fundTicker);
+        }
+
+        $scope.testFunction = function (){
+            var fund = $scope.findFundByTicker('VFINX');
+        };
+        var jobsInfo = jobs.get(
+
+       function(data){
+              $scope.jobInfoToPrint = data.Report_Data.Report_Entry[0];
+              console.log($scope.jobInfoToPrint);
+
+       });
+
     }]).factory('luisService',['$http',function($http){
 
 
@@ -146,14 +167,17 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                 case 'Contact':
                                     returnIntentObject.intent = 'Contact';
                                     break;
+                                case 'FundInformation':
+                                    returnIntentObject.intent = 'FundInformation';
+                                    break;
+                                case 'News':
+                                    returnIntentObject.intent = 'News';
+                                    break;
                                 default:
                                     returnIntentObject.intent = 'Home';
                                     break;
                             }
                     }
-
-
-                    //alert('Hi I found the intent '+returnIntentObject.intent);
 
                     return returnIntentObject;
                 }
