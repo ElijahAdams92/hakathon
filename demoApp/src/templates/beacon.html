@@ -1,0 +1,27 @@
+<div role="dialog" aria-label="Chat!" layout="column" layout-align="center center" class="chat" layout-padding>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Beacon</h2>
+        </div>
+    </md-toolbar>
+    <div ng-controller="AppCtrl">
+        <div layout="column" class="white-text chat-window" layout-padding layout-margin>
+            <div ng-repeat="botChat in botChats">
+                <div class="botChat" layout-padding>{{botChat}}</div>
+                <div flex="25"></div>
+            </div>
+            <div ng-repeat="chat in userChats">
+                <div class="userChat" layout-padding>{{chat}}</div>
+                <div flex="25"></div>
+            </div>
+        </div>
+        <div layout="row">
+            <input class="chat-send-btn" ng-model="userChat"><md-button ng-click="addUserChat()" class="md-primary">Send</md-button>
+        </div>
+    </div>
+    <div layout="row" class="demo-dialog-button">
+        <md-button md-autofocus flex class="md-primary" ng-click="ctrl.closeDialog()">
+            Close
+        </md-button>
+    </div>
+</div>
