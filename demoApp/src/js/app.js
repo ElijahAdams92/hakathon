@@ -1,4 +1,4 @@
-angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories'])
+angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'beacon'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/home', {
@@ -44,6 +44,16 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories'])
          };
 
         $scope.currentNavItem = 'home';
+
+         $scope.botChats = ['Hello', 'How may I help you?'];
+
+        $scope.userChats = [];
+        $scope.userChat = '';
+
+        $scope.addUserChat = function() {
+            $scope.userChats.push($scope.userChat);
+            $scope.userChat = '';
+        };
 
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
     }]).factory('luisService',['$http',function($http){
