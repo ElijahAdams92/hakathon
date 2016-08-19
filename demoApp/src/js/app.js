@@ -114,6 +114,8 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                           {
                                                 returnIntentObject.intent = "Fund name:" + returnIntentObject.intent.name + "\n"+"price:"+returnIntentObject.intent.price;
                                           }
+                                          returnData = '';
+                                          botResponse(returnIntentObject, returnData)
                                          break;
                                      case 'Contact':
                                          returnIntentObject.intent = 'contact';
