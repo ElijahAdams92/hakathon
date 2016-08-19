@@ -33,7 +33,6 @@ angular.module('apiFactories',['ngResource'])
             }
     }]).factory('getFundInfoService',['$http',function($http){
         return{
-
             'getFunds':function(scope,callback){
               var url = 'https://sandbox.apisvanguard.com/frapie/us/1.0/fund/',
               config = {
@@ -53,6 +52,12 @@ angular.module('apiFactories',['ngResource'])
                   {
                     callback(scope.funds);
                   }
+              }).error(function(){
+                $http.get('funds.json').success(function(data){
+
+                    scope.funds = data;
+                });
+
               });
 
             }
@@ -68,7 +73,7 @@ angular.module('apiFactories',['ngResource'])
           {
               for(i = 0;i<fundList.length;i++){
                 currentTicker = fundList[i].profile.ticker;
-                  if(currentTicker && ticker === currentTicker)
+                  if(currentTicker && ticker.toUpperCase() === currentTicker.toUpperCase())
                   {
                       returnFund.ticker = currentTicker;
                       returnFund.price = fundList[i].priceInfo.price.amt;

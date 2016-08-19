@@ -110,6 +110,10 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                          break;
                                        case 'FundInformation':
                                          returnIntentObject.intent = $scope.findFundByTicker(intentInfo.entities[0].entity);
+                                          if(returnIntentObject.intent)
+                                          {
+                                                returnIntentObject.intent = "Fund name:" + returnIntentObject.intent.name + "\n"+"price:"+returnIntentObject.intent.price;
+                                          }
                                          break;
                                      case 'Contact':
                                          returnIntentObject.intent = 'contact';
