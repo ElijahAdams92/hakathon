@@ -40,7 +40,7 @@ angular.module('apiFactories',['ngResource'])
                   method: 'GET'
               };
 
-              $http.get('../funds.json').success(function(data){
+              $http.get(url, config).success(function(data){
 
                    var json = JSON.parse(data);
 
