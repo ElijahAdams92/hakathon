@@ -1,4 +1,4 @@
-angular.module('app', ['ngMaterial', 'ngRoute'])
+angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.
             when('/home', {
@@ -26,8 +26,8 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
         .primaryPalette('red')
         .accentPalette('grey');
     })
-    .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService',
-                            function($scope, $mdSidenav,luisService,intentService) {
+    .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService','newsRecentStories','newsPersonalfinance','newsEconWeek','jobs',
+                            function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, jobs) {
         $scope.chatInput = '';
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
@@ -107,4 +107,6 @@ angular.module('app', ['ngMaterial', 'ngRoute'])
             };
 
             return {"determineIntent":determineIntent};
-    });
+    })
+
+
