@@ -72,7 +72,7 @@ angular.module('apiFactories',['ngResource'])
           {
               for(i = 0;i<fundList.length;i++){
                 currentTicker = fundList[i].profile.ticker;
-                  if(currentTicker && ticker === currentTicker)
+                  if(currentTicker && ticker.toUpperCase() === currentTicker.toUpperCase())
                   {
                       returnFund.ticker = currentTicker;
                       returnFund.price = fundList[i].priceInfo.price.amt;
