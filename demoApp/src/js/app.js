@@ -4,7 +4,7 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
             when('/home', {
                 templateUrl: 'templates/home.html'
             }).
-            when('/balance', {
+            when('/investing', {
                 templateUrl: 'templates/balance.html'
             }).
             when('/account', {
@@ -28,9 +28,9 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         .primaryPalette('red')
         .accentPalette('grey');
     })
-    .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService','newsRecentStories','newsPersonalfinance',
+    .controller('AppCtrl', ['$scope', '$mdSidenav', '$document','$timeout', 'luisService','intentService','newsRecentStories','newsPersonalfinance',
                             'newsEconWeek','jobs','getFundInfoService','findFundService',
-                            function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, jobs,getFundInfoService,findFundService) {
+                            function($scope, $mdSidenav, $document, $timeout, luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, jobs,getFundInfoService,findFundService) {
         $scope.chatInput = '';
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
@@ -69,28 +69,30 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                              switch(foundIntent)
                              {
                                  case 'Careers':
-                                     returnIntentObject.intent = 'Careers';
+                                     returnIntentObject.intent = 'careers';
                                      returnData = '#careers';
                                      break;
                                  case 'Account':
-                                     returnIntentObject.intent = 'Account';
+                                     returnIntentObject.intent = ' your account';
                                      returnData = '#account'
                                      break;
                                  case 'Balance':
-                                     returnIntentObject.intent = 'Balance';
+                                     returnIntentObject.intent = 'balance';
                                      returnData = '#balance';
                                      break;
+                                   case 'FundInformation':
+                                     returnIntentObject.intent = $scope.findFundByTicker(intentInfo.entities[0].entity);
+                                     break;
                                  case 'Contact':
-                                     returnIntentObject.intent = 'Contact';
+                                     returnIntentObject.intent = 'contact';
                                      returnData = '#contact'
                                      break;
                                  default:
-                                     returnIntentObject.intent = 'Home';
+                                     returnIntentObject.intent = 'home';
                                      returnData = '#home';
                                      break;
                              }
                      }
-
                     $scope.botChat = 'I have found you some information about ' + returnIntentObject.intent;
                     $scope.url = returnData;
                     $scope.chats.push({"messenger": "bot", "message": $scope.botChat, "url": $scope.url});
@@ -178,6 +180,9 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                     break;
                             }
                     }
+
+
+
 
                     return returnIntentObject;
                 }

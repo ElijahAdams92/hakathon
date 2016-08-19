@@ -108,21 +108,14 @@
      border-style: solid;
      border-width: 5px;
      border-color: white;
-     width: 350px;
+     background-color: rgba(0, 0, 0, 0.8);
+
 }
 
 .chat-window {
-     background-color: white;
-}
-
-.userChat {
-    background-color: green;
-    border-radius: 25px;
-}
-
-.botChat {
-    background-color: blue;
-    border-radius: 25px;
+    width: 350px;
+    height: 550px;
+    overflow: auto;
 }
 
 .chart{
@@ -152,7 +145,6 @@
     padding:10px;
 }
 
-
 .chat-send-btn {
     display: inline-block;
 }
@@ -170,11 +162,25 @@
 }
 
 .userChat {
-    background-color: green;
+    background-color: blue;
     border-radius: 25px;
+    opacity: .65;
+    color: white;
+}
+
+.a.userChat
+.a .userChat {
+    color: white;
 }
 
 .botChat {
-    background-color: orange;
+    background-color: grey;
     border-radius: 25px;
+    opacity: .90;
+    color: black;
+}
+
+.chat-button {
+    background-color:grey;
+    opacity: .9;
 }
