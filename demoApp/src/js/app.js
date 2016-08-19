@@ -100,7 +100,7 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                          startCareerProcess();
                                          break;
                                      case 'Account':
-                                         returnIntentObject.intent = ' your account';
+                                         returnIntentObject.intent = 'account';
                                          returnData = '#account'
                                          botResponse(returnIntentObject, returnData);
                                          break;
@@ -167,7 +167,7 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         }
 
         botResponse = function(returnIntentObject, returnData) {
-            $scope.botChat = 'I have found you some information about ' + returnIntentObject.intent;
+            $scope.botChat = 'I have found '+ returnIntentObject.intent + ' information.' ;
             $scope.url = returnData;
             $scope.chats.push({"messenger": "bot", "message": $scope.botChat, "url": $scope.url});
          };
