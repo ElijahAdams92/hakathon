@@ -29,8 +29,8 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         .accentPalette('grey');
     })
     .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService','newsRecentStories','newsPersonalfinance',
-                            'newsEconWeek','jobs','getFundInfoService','findFundService',
-                            function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, jobs,getFundInfoService,findFundService) {
+                            'newsEconWeek','getFundInfoService','findFundService', '$filter', 'getJobsInfoService',
+                            function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, getFundInfoService,findFundService,$filter, getJobsInfoService) {
         $scope.chatInput = '';
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
@@ -104,6 +104,8 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
 
         getFundInfoService.getFunds($scope);
+        getJobsInfoService.getJobs($scope);
+
 
         $scope.findFundByTicker =  function(fundTicker){
             return findFundService.findFundsByTicker($scope.funds,fundTicker);
@@ -112,13 +114,21 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         $scope.testFunction = function (){
             var fund = $scope.findFundByTicker('VFINX');
         };
-        var jobsInfo = jobs.get(
 
-       function(data){
-              $scope.jobInfoToPrint = data.Report_Data.Report_Entry[0];
-              console.log($scope.jobInfoToPrint);
+       var filterJobs = function(location, time, jobFamily) {
 
-       });
+            var locationFilteredList = $filter('filter')($scope.ReportEntryData , location),
+                fullTimeFilteredList = $filter('filter')(locationFilteredList , time),
+                jobFamilyFilteredList = $filter('filter')(fullTimeFilteredList , jobFamily);
+            return jobFamilyFilteredList;
+      };
+
+      $scope.testJobFilter = function() {
+
+        var filteredJobList = filterJobs('Malvern', 'Service', 'Manager');
+         console.log(filteredJobList)
+      };
+
 
     }]).factory('luisService',['$http',function($http){
 

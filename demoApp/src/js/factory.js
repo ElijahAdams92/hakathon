@@ -12,8 +12,25 @@ angular.module('apiFactories',['ngResource'])
                   return $resource('http://rss.vanguard.com/rss/econweek.xml');
     }])
 
-    .factory('jobs',['$resource', function($resource){
-                  return $resource('../vanguard_jobs.json');
+    .factory('getJobsInfoService', ['$http', function($http){
+
+            return {
+                'getJobs':function(scope,callback){
+                  var url = '../vanguard_jobs.json',
+                  config = {
+                      method: 'GET'
+                  };
+                  $http.get(url,config).success(function(data){
+
+                      if(data)
+                      {
+                        scope.ReportEntryData = data.Report_Data.Report_Entry;
+                      }
+
+                  });
+
+                }
+            }
     }]).factory('getFundInfoService',['$http',function($http){
         return{
 
@@ -65,13 +82,3 @@ angular.module('apiFactories',['ngResource'])
     };
 });
 
-
-
-
-
-
-
-//call luis factory
-// logic to handle intents of luis
-// based off that logic call one of my factories
-//
