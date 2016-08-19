@@ -33,7 +33,6 @@ angular.module('apiFactories',['ngResource'])
             }
     }]).factory('getFundInfoService',['$http',function($http){
         return{
-
             'getFunds':function(scope,callback){
               var url = 'https://sandbox.apisvanguard.com/frapie/us/1.0/fund/',
               config = {
@@ -45,12 +44,19 @@ angular.module('apiFactories',['ngResource'])
 
                   if(data.fund)
                   {
+                      throw 'error!';
                     scope.funds = data.fund;
                   }
                   if(callback)
                   {
                     callback(scope.funds);
                   }
+              }).error(function(){
+                $http.get('funds.json').success(function(data){
+
+                           scope.funds = data;
+                });
+
               });
 
             }
