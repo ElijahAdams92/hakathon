@@ -20,16 +20,14 @@
                 <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
                     <md-nav-item md-nav-href="#home" name="home">Home</md-nav-item>
                     <md-nav-item md-nav-href="#account" name="account_info">Account information</md-nav-item>
-                    <md-nav-item md-nav-href="#balance" name="balances">Balances</md-nav-item>
+                    <md-nav-item md-nav-href="#investing" name="investing">Investing</md-nav-item>
                     <md-nav-item md-nav-href="#contact" name="contact_us">Contact us</md-nav-item>
                     <md-nav-item md-nav-href="#careers" name="careers">Careers</md-nav-item>
                 </md-nav-bar>
             </span>
             <span class="md-toolbar-item">
-                <md-input-container class="white-background">
-                    <label>Search</label>
-                    <input/>
-                </md-input-container>
+                <label>Search</label>
+                <input/>
             </span>
         </md-toolbar>
         <md-sidenav class="md-sidenav-left md-whiteframe-z2 grey-background" md-component-id="left">
@@ -37,7 +35,7 @@
             <div layout="column" layout-padding>
                 <md-button ng-href="#home" ng-click="toggleSidenav('left')">Home</md-button>
                 <md-button ng-href="#account" ng-click="toggleSidenav('left')">Account information</md-button>
-                <md-button ng-href="#balances" ng-click="toggleSidenav('left')">Balances</md-button>
+                <md-button ng-href="#investing" ng-click="toggleSidenav('left')">Investing</md-button>
                 <md-button ng-href="#contact_us" ng-click="toggleSidenav('left')">Contact us</md-button>
                 <md-button ng-href="#careers" ng-click="toggleSidenav('left')">Careers</md-button>
             </div>
@@ -45,6 +43,7 @@
 
         <section ng-view layout-align="center center">
         </section>
+
 
         <div class="demo-md-panel md-padding" ng-controller="BasicDemoCtrl as ctrl">
             <div layout="row">
@@ -58,6 +57,10 @@
 
         <button ng-click='testFunction()'>Test Fund Service</button>
         <button ng-click='testJobFilter()'>Test job filter</button>
+
+        <!--<button ng-click='testFunction()'>Test Fund Service</button>-->
+
+
         <!-- Angular Material requires Angular.js Libraries -->
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
