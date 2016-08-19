@@ -35,6 +35,11 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         $scope.userChats = [];
         $scope.botChats = ['Hello.  How can I help you?'];
 
+        var location,
+            fullTime,
+            jobType,
+            stepNumber;
+
         $scope.submitUserChat = function() {
             $scope.userChats.push($scope.chatInput);
             $scope.date = new Date();
@@ -55,53 +60,111 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         $scope.addUserChat = function() {
             $scope.chats.push({"messenger": "user", "message": $scope.userChat});
 
-            luisService.getIntent($scope.userChat, function(intentInfo) {
-               if(intentInfo){
-                     var firstIntent = intentInfo.intents[0],
-                         foundIntent,
-                         returnIntentObject = {'intent':'','entities':intentInfo.entities},
-                         returnData;
-
-                     if(firstIntent)
-                     {
-                            foundIntent  = firstIntent.intent;
-
-                             switch(foundIntent)
-                             {
-                                 case 'Careers':
-                                     returnIntentObject.intent = 'careers';
-                                     returnData = '#careers';
-                                     break;
-                                 case 'Account':
-                                     returnIntentObject.intent = ' your account';
-                                     returnData = '#account'
-                                     break;
-                                 case 'Balance':
-                                     returnIntentObject.intent = 'balance';
-                                     returnData = '#balance';
-                                     break;
-                                   case 'FundInformation':
-                                     returnIntentObject.intent = $scope.findFundByTicker(intentInfo.entities[0].entity);
-                                     break;
-                                 case 'Contact':
-                                     returnIntentObject.intent = 'contact';
-                                     returnData = '#contact'
-                                     break;
-                                 default:
-                                     returnIntentObject.intent = 'home';
-                                     returnData = '#home';
-                                     break;
-                             }
-                     }
-                    $scope.botChat = 'I have found you some information about ' + returnIntentObject.intent;
-                    $scope.url = returnData;
-                    $scope.chats.push({"messenger": "bot", "message": $scope.botChat, "url": $scope.url});
+            if(!luisIsOn) {
+                switch(stepNumber) {
+                    case 'step1':
+                          location = $scope.userChat;
+                          careerStep2();
+                          break;
+                    case 'step2':
+                          fullTime = $scope.userChat;
+                          careerStep3();
+                          break;
+                    case 'step3':
+                         jobType = $scope.userChat;
+                         luisIsOn = true;
+                         careerStep4();
+                         break;
+                    default:
+                        break;
                 }
-            });
+            }
 
+            if(luisIsOn) {
+                 luisService.getIntent($scope.userChat, function(intentInfo) {
+                   if(intentInfo){
+                         var firstIntent = intentInfo.intents[0],
+                             foundIntent,
+                             returnIntentObject = {'intent':'','entities':intentInfo.entities},
+                             returnData;
+
+                         if(firstIntent)
+                         {
+                                foundIntent  = firstIntent.intent;
+
+                                 switch(foundIntent)
+                                 {
+                                     case 'Careers':
+                                         returnIntentObject.intent = 'careers';
+                                         //returnData = '#careers';
+                                         startCareerProcess();
+                                         break;
+                                     case 'Account':
+                                         returnIntentObject.intent = ' your account';
+                                         returnData = '#account'
+                                         botResponse(returnIntentObject, returnData);
+                                         break;
+                                     case 'Balance':
+                                         returnIntentObject.intent = 'balance';
+                                         returnData = '#balance';
+                                         break;
+                                       case 'FundInformation':
+                                         returnIntentObject.intent = $scope.findFundByTicker(intentInfo.entities[0].entity);
+                                         break;
+                                     case 'Contact':
+                                         returnIntentObject.intent = 'contact';
+                                         returnData = '#contact'
+                                         botResponse(returnIntentObject, returnData);
+                                         break;
+                                     default:
+                                         returnIntentObject.intent = 'home';
+                                         returnData = '#home';
+                                         botResponse(returnIntentObject, returnData);
+                                         break;
+                                 }
+                         }
+                    }
+                });
+            }
             $scope.userChat = '';
             $scope.botChat = '';
         };
+
+        var luisIsOn = true;
+
+        var startCareerProcess = function() {
+            var initialResponse = "I have found " + $scope.ReportEntryData.length + " opportunities at Vanguard."
+             $scope.chats.push({"messenger": "bot", "message": initialResponse});
+
+             $scope.chats.push({"messenger": "bot", "message": "Which location, NC or PA?"});
+                stepNumber = "step1";
+             luisIsOn = false;
+        },
+
+        careerStep2 = function() {
+             $scope.chats.push({"messenger": "bot", "message": "Are you looking for full time or part time?"});
+             stepNumber = "step2";
+        },
+
+        careerStep3 = function() {
+            $scope.chats.push({"messenger": "bot", "message": "What type of job are you looking for?"});
+            stepNumber = "step3";
+        },
+        careerStep4 = function() {
+            var filteredJobs = filterJobs(location, fullTime, jobType);
+
+             $scope.chats.push({"messenger": "bot", "message": "Here are the top 3 career opportunities at Vanguard based on your preferences:"});
+
+             for(var i = 0; i< 3; i++) {
+                 $scope.chats.push({"messenger": "bot", "message": filteredJobs[i].Job_Title.__text, "url": "#careers"});
+             }
+        }
+
+        botResponse = function(returnIntentObject, returnData) {
+            $scope.botChat = 'I have found you some information about ' + returnIntentObject.intent;
+            $scope.url = returnData;
+            $scope.chats.push({"messenger": "bot", "message": $scope.botChat, "url": $scope.url});
+         };
 
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
 
