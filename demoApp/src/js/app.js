@@ -56,6 +56,16 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         };
 
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
+
+
+           var jobsInfo = jobs.get(
+
+           function(data){
+                  $scope.jobInfoToPrint = data.Report_Data.Report_Entry[0];
+                  console.log($scope.jobInfoToPrint);
+
+           });
+
     }]).factory('luisService',['$http',function($http){
 
 

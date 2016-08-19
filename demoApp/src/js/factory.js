@@ -13,7 +13,7 @@ angular.module('apiFactories',['ngResource'])
     }])
 
     .factory('jobs',['$resource', function($resource){
-                  return $resource('/vanguard_jobs.xml');
+                  return $resource('../vanguard_jobs.json');
     }]);
 
 
