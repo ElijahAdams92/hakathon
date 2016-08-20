@@ -44,7 +44,6 @@ angular.module('apiFactories',['ngResource'])
 
                   if(data.fund)
                   {
-                      throw 'error!';
                     scope.funds = data.fund;
                   }
                   if(callback)
@@ -54,7 +53,7 @@ angular.module('apiFactories',['ngResource'])
               }).error(function(){
                 $http.get('funds.json').success(function(data){
 
-                           scope.funds = data;
+                    scope.funds = data;
                 });
 
               });
