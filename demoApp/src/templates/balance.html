@@ -1,1 +1,19 @@
-<h1 class="md-display-2">Investing</h1>
+<h1 class="md-display-2">Fund information</h1>
+
+<div ng-controller="InvestingCtrl" layout="column" class="md-whiteframe-7dp white-background" layout-padding layout-margin>
+    <div>
+        <h2>Fund name</h2>
+        <hr>
+        <div>{{selectedFund.name}}</div>
+    </div>
+    <div>
+        <h2>Fund ticker symbol</h2>
+        <hr>
+        <div>{{selectedFund.ticker}}</div>
+    </div>
+    <div>
+        <h2>Fund price</h2>
+        <hr>
+        <div>{{selectedFund.price}}</div>
+    </div>
+</div>

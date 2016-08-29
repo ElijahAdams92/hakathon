@@ -28,6 +28,21 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
         .primaryPalette('red')
         .accentPalette('grey');
     })
+    .controller('InvestingCtrl', ['$scope', 'getFundInfoService', 'findFundService', '$location', function($scope, getFundInfoService, findFundService, $location) {
+        var ticker = $location.search().ticker,
+            funds;
+
+        $scope.currentNavItem = 'investing';
+        $scope.selectedFund;
+
+        getFundInfoService.query(function(data) {
+            funds = data;
+
+            $scope.selectedFund = findFundService.findFundsByTicker(funds, ticker);
+
+            console.log($scope.selectedFund);
+        });
+    }])
     .controller('AppCtrl', ['$scope', '$mdSidenav','luisService','intentService','newsRecentStories','newsPersonalfinance',
                             'newsEconWeek','getFundInfoService','findFundService', '$filter', 'getJobsInfoService', '$timeout',
                             function($scope, $mdSidenav,luisService,intentService, newsRecentStories, newsPersonalfinance, newsEconWeek, getFundInfoService,findFundService,$filter, getJobsInfoService, $timeout) {
@@ -84,7 +99,6 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                  switch(foundIntent){
                                      case 'Careers':
                                          returnIntentObject.intent = 'careers';
-                                         //returnData = '#careers';
                                          startCareerProcess();
                                          break;
                                      case 'Account':
@@ -93,12 +107,9 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                                          botResponseAccount(returnIntentObject, returnData);
                                          break;
                                      case 'FundInformation':
-                                         returnIntentObject.intent = $scope.findFundByTicker(intentInfo.entities[0].entity);
-                                          if(returnIntentObject.intent){
-                                                returnIntentObject.intent = "Fund name:" + returnIntentObject.intent.name + "\n"+"price:"+returnIntentObject.intent.price;
-                                          }
-                                          returnData = '';
-                                          botResponse(returnIntentObject, returnData)
+                                          returnIntentObject.intent = $scope.findFundByTicker(intentInfo.entities[0].entity);
+                                          returnData = '#investing?ticker=' + returnIntentObject.intent.ticker;
+                                          botResponseFundInformation(returnIntentObject, returnData);
                                          break;
                                      case 'Contact':
                                          returnIntentObject.intent = 'contact';
@@ -127,7 +138,7 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
 
              $scope.chats.push({"messenger": "bot", "message": "Which location, NC or PA?"});
              scrollToBottom();
-                stepNumber = "step1";
+             stepNumber = "step1";
              luisIsOn = false;
         },
 
@@ -177,6 +188,20 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
              scrollToBottom();
           },
 
+          botResponseFundInformation = function(returnIntentObject, returnData) {
+               $scope.botChat = 'I have found the fund information.';
+               $scope.url = returnData;
+               $scope.chats.push(
+                   {"messenger": "bot", "message": $scope.botChat},
+                   {"messenger": "bot", "message": "Fund name: " + returnIntentObject.intent.name},
+                   {"messenger": "bot", "message": "Ticker: "+ returnIntentObject.intent.ticker},
+                   {"messenger": "bot", "message": "Price: " + returnIntentObject.intent.price},
+                   {"messenger": "bot", "message": "More info....", "url": $scope.url}
+               );
+
+               scrollToBottom();
+          },
+
          scrollToBottom = function() {
             $timeout(function() {
                 var scroller = document.getElementById('chatWindow');
@@ -186,17 +211,18 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
 
         luisService.getIntent('Tell me about careers',intentService.determineIntent);
 
-        getFundInfoService.getFunds($scope);
+        var funds;
+
+        getFundInfoService.query(function(data) {
+             funds = data;
+        });
+
         getJobsInfoService.getJobs($scope);
 
 
         $scope.findFundByTicker =  function(fundTicker){
-            return findFundService.findFundsByTicker($scope.funds,fundTicker);
+            return findFundService.findFundsByTicker(funds, fundTicker);
         }
-
-        $scope.testFunction = function (){
-            var fund = $scope.findFundByTicker('VFINX');
-        };
 
        var filterJobs = function(location, time, jobFamily) {
 
@@ -205,13 +231,6 @@ angular.module('app', ['ngMaterial', 'ngRoute', 'ngResource','apiFactories', 'be
                 jobFamilyFilteredList = $filter('filter')(fullTimeFilteredList , jobFamily);
             return jobFamilyFilteredList;
       };
-
-      $scope.testJobFilter = function() {
-
-        var filteredJobList = filterJobs('Malvern', 'Service', 'Manager');
-         console.log(filteredJobList)
-      };
-
 
     }]).factory('luisService',['$http',function($http){
 
